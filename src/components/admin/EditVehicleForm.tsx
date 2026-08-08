@@ -128,10 +128,10 @@ export default function EditVehicleForm({
             defaultValue={vehicle.transmission ?? "Automatic"}
             className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white"
           >
-            <option>Automatic</option>
-            <option>Manual</option>
-            <option>CVT</option>
-          </select>
+              <option value="Automatic">Automatic</option>
+  <option value="Manual">Manual</option>
+  <option value="CVT">CVT</option>
+</select>
         </div>
 
         <div>
@@ -144,11 +144,11 @@ export default function EditVehicleForm({
             defaultValue={vehicle.fuel_type ?? "Gasoline"}
             className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white"
           >
-            <option>Gasoline</option>
-            <option>Diesel</option>
-            <option>Hybrid</option>
-            <option>Electric</option>
-          </select>
+           <option value="Gasoline">Gasoline</option>
+  <option value="Diesel">Diesel</option>
+  <option value="Hybrid">Hybrid</option>
+  <option value="Electric">Electric</option>
+</select>
         </div>
 
         <div>
@@ -244,8 +244,8 @@ export default function EditVehicleForm({
             className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white"
           >
             <option value="available">available</option>
-            <option value="sold">sold</option>
-          </select>
+  <option value="sold">sold</option>
+</select>
 
         </div>
 

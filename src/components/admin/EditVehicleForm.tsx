@@ -1,6 +1,7 @@
 "use client";
 
 import { updateVehicle } from "@/lib/actions/updateVehicle";
+import { deleteVehicleImage } from "@/lib/actions/deleteVehicleImage";
 
 type Vehicle = {
   id: string;
@@ -21,10 +22,19 @@ type Vehicle = {
   description: string | null;
 };
 
+type VehicleImage = {
+  id: string;
+  vehicle_id: string;
+  image_url: string;
+  sort_order: number;
+};
+
 export default function EditVehicleForm({
   vehicle,
+  images,
 }: {
   vehicle: Vehicle;
+  images: VehicleImage[];
 }) {
   return (
     <form
@@ -268,17 +278,57 @@ export default function EditVehicleForm({
 
       {/* Current Photos */}
 
-      <div>
+{/* Current Photos */}
 
-        <label className="mb-4 block text-sm text-zinc-400">
-          Current Photos
-        </label>
+<div>
+  <label className="mb-4 block text-sm text-zinc-400">
+    Current Photos
+  </label>
 
-        <div className="rounded-lg border border-dashed border-zinc-700 p-8 text-center text-zinc-500">
-          Existing photos will appear here.
+  {images.length === 0 ? (
+    <div className="rounded-lg border border-dashed border-zinc-700 p-8 text-center text-zinc-500">
+      No photos uploaded yet.
+    </div>
+  ) : (
+    <div className="flex flex-wrap gap-6">
+      {images.map((image) => (
+        <div
+          key={image.id}
+          className="relative overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800"
+        >
+          <img
+            src={image.image_url}
+            alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+            className="h-36 w-48 object-cover"
+          />
+
+          <button
+            type="button"
+            onClick={async () => {
+              const confirmed = window.confirm(
+                "Are you sure you want to delete this photo?"
+              );
+
+              if (!confirmed) return;
+
+              try {
+                await deleteVehicleImage(image.id);
+
+                window.location.reload();
+              } catch (error) {
+                console.error(error);
+                alert("Failed to delete photo.");
+              }
+            }}
+            className="absolute bottom-2 right-2 rounded-md bg-red-600 px-3 py-1 text-sm font-semibold text-white hover:bg-red-500"
+          >
+            Delete
+          </button>
         </div>
-
-      </div>
+      ))}
+    </div>
+  )}
+</div>
 
       {/* Upload More Photos */}
 

@@ -1,5 +1,6 @@
 import { getVehicleById } from "@/lib/actions/admin";
 import EditVehicleForm from "@/components/admin/EditVehicleForm";
+import { createClient } from "@/lib/supabase/server";
 
 type Props = {
   params: Promise<{
@@ -11,6 +12,18 @@ export default async function EditVehiclePage({ params }: Props) {
   const { id } = await params;
 
   const vehicle = await getVehicleById(id);
+
+  const supabase = await createClient();
+
+const { data: images, error: imagesError } = await supabase
+  .from("vehicle_images")
+  .select("id, vehicle_id, image_url, sort_order")
+  .eq("vehicle_id", id)
+  .order("sort_order", { ascending: true });
+
+if (imagesError) {
+  console.error("ERROR LOADING VEHICLE IMAGES:", imagesError);
+}
 
   if (!vehicle) {
     return (
@@ -30,7 +43,10 @@ export default async function EditVehiclePage({ params }: Props) {
           Edit Vehicle
         </h1>
 
-       <EditVehicleForm vehicle={vehicle} />
+       <EditVehicleForm
+  vehicle={vehicle}
+  images={images ?? []}
+/>
 
       </div>
     </main>

@@ -76,7 +76,7 @@ export default function VehicleTable({
                     alt=""
                     width={80}
                     height={60}
-                    className="rounded-lg object-cover"
+                    className="rounded-lg object-cover w-[80px] h-[60px]"
                   />
 
                   <div>

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import InquiryActions from "@/components/admin/InquiryActions";
 
 export default async function InquiriesPage() {
   const supabase = await createClient();
@@ -121,6 +122,27 @@ export default async function InquiriesPage() {
                 </div>
               </div>
 
+              {/* Status */}
+<div className="lg:text-right">
+  <p className="text-sm text-gray-500">
+    Status
+  </p>
+
+  <p
+    className={`mt-1 inline-block rounded-full px-3 py-1 text-sm font-semibold ${
+      inquiry.status === "New"
+        ? "bg-yellow-500/20 text-yellow-400"
+        : inquiry.status === "Contacted"
+        ? "bg-blue-500/20 text-blue-400"
+        : inquiry.status === "Follow-up"
+        ? "bg-purple-500/20 text-purple-400"
+        : "bg-green-500/20 text-green-400"
+    }`}
+  >
+    {inquiry.status || "New"}
+  </p>
+</div>
+
               {/* Subject */}
               {inquiry.subject && (
                 <div className="mt-6 border-t border-zinc-800 pt-5">
@@ -144,6 +166,11 @@ export default async function InquiriesPage() {
                   {inquiry.message || "No message provided."}
                 </p>
               </div>
+
+              <InquiryActions
+  inquiryId={inquiry.id}
+  status={inquiry.status || "New"}
+/>
             </div>
           ))}
         </div>

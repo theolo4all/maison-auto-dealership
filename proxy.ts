@@ -45,10 +45,13 @@ export async function proxy(request: NextRequest) {
     user ? user.email : "NOT LOGGED IN"
   );
 
-  // Allow the login page without authentication
-  if (pathname === "/admin/login") {
-    return response;
-  }
+// Allow login and password reset pages without authentication
+if (
+  pathname === "/admin/login" ||
+  pathname === "/admin/reset-password"
+) {
+  return response;
+}
 
   // Protect all other admin pages
   if (pathname.startsWith("/admin") && !user) {

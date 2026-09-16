@@ -4,11 +4,10 @@ import { createVehicle } from "@/lib/actions/createVehicle";
 
 export default function AddVehicleForm() {
   return (
-    <form
-      action={createVehicle}
-      encType="multipart/form-data"
-      className="space-y-8"
-    >
+<form
+  action={createVehicle}
+  className="space-y-8"
+>
       {/* Basic Information */}
       <div className="grid gap-6 md:grid-cols-3">
         <div>

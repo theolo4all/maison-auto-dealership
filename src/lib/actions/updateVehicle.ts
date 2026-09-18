@@ -6,6 +6,15 @@ import { redirect } from "next/navigation";
 export async function updateVehicle(formData: FormData) {
   const supabase = await createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  console.log(
+    "UPDATE VEHICLE AUTH USER:",
+    user ? user.email : "NOT LOGGED IN"
+  );
+
   const id = formData.get("id") as string;
 
   if (!id) {

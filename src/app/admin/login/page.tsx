@@ -11,13 +11,17 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+
   const [error, setError] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
     setLoading(true);
     setError("");
+    setResetMessage("");
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -33,6 +37,33 @@ export default function AdminLoginPage() {
 
     router.push("/admin/dashboard");
     router.refresh();
+  }
+
+  async function handleForgotPassword() {
+    setError("");
+    setResetMessage("");
+
+    if (!email) {
+      setError("Please enter your email address first.");
+      return;
+    }
+
+    setResetLoading(true);
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://maisonauto.ca/admin/reset-password",
+    });
+
+    setResetLoading(false);
+
+    if (error) {
+      setError(error.message);
+      return;
+    }
+
+    setResetMessage(
+      "Password reset email sent. Please check your inbox."
+    );
   }
 
   return (
@@ -69,9 +100,28 @@ export default function AdminLoginPage() {
             required
           />
 
+          <div className="text-right">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              disabled={resetLoading}
+              className="text-sm text-yellow-500 hover:text-yellow-400 disabled:opacity-50"
+            >
+              {resetLoading
+                ? "Sending reset email..."
+                : "Forgot Password?"}
+            </button>
+          </div>
+
           {error && (
             <p className="text-sm text-red-400">
               {error}
+            </p>
+          )}
+
+          {resetMessage && (
+            <p className="text-sm text-green-400">
+              {resetMessage}
             </p>
           )}
 
